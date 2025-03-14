@@ -140,17 +140,16 @@
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-        console.error('In served');
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
         // Firebase configuration (replace with your actual config)
         const firebaseConfig = {
-          apiKey: "AIzaSyBm1GR5Neg_OUhxThNQ4E4Cw7qAqt4oMVU",
-          authDomain: "oscrdatabase-1b5c3eu72j9.firebaseapp.com",
-          projectId: "oscrdatabase-1b5c3eu72j9",
-          storageBucket: "oscrdatabase-1b5c3eu72j9.appspot.com", // fixed this
-          messagingSenderId: "976240368439",
-          appId: "1:976240368439:web:247c2565e0190ef3d658b2"
+              apiKey: "AIzaSyBm1GR5Neg_OUhxThNQ4E4Cw7qAqt4oMVU",
+              authDomain: "oscrdatabase-1b5c3eu72j9.firebaseapp.com",
+              projectId: "oscrdatabase-1b5c3eu72j9",
+              storageBucket: "oscrdatabase-1b5c3eu72j9.appspot.com", // fixed this
+              messagingSenderId: "976240368439",
+              appId: "1:976240368439:web:247c2565e0190ef3d658b2"
         };
 
         // Initialize Firebase
@@ -165,11 +164,11 @@
 
             try {
                 // Fetch user data from Firestore based on SpecID
-                const userRef = db.collection("users").doc(specId);  // Assuming "users" is the collection name
-                const doc = await userRef.get();
+                const userRef = doc(db, "users", specId);  // Use doc() for individual document
+                const docSnap = await getDoc(userRef);
 
-                if (doc.exists) {
-                    const userData = doc.data();
+                if (docSnap.exists()) {
+                    const userData = docSnap.data();
                     if (userData.pin === pin) {
                         alert("Sign-in successful!");
                         // Redirect or further actions here
@@ -182,7 +181,6 @@
             } catch (error) {
                 document.getElementById("error-message").innerText = error.message;
             }
-            
         });
     </script>
 </body>
