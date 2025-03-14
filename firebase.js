@@ -1,6 +1,8 @@
+// Import necessary Firebase functions
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
+// Your Firebase config (replace with your actual config)
 const firebaseConfig = {
   apiKey: "AIzaSyBm1GR5Neg_OUhxThNQ4E4Cw7qAqt4oMVU",
   authDomain: "oscrdatabase-1b5c3eu72j9.firebaseapp.com",
@@ -12,4 +14,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+
+// Initialize Firestore (database)
+const db = getFirestore(app);
+
+// Export `db` so you can use it in other scripts
+export { db };
