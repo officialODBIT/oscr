@@ -127,16 +127,33 @@
         </section>
     </main>
 
-    <script>
-        // Check if user is logged in
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+    <!-- Initialize Firebase -->
+    <script type="module">
+        const firebaseConfig = {
+  apiKey: "AIzaSyBm1GR5Neg_OUhxThNQ4E4Cw7qAqt4oMVU",
+  authDomain: "oscrdatabase-1b5c3eu72j9.firebaseapp.com",
+  projectId: "oscrdatabase-1b5c3eu72j9",
+  storageBucket: "oscrdatabase-1b5c3eu72j9.appspot.com", // fixed this
+  messagingSenderId: "976240368439",
+  appId: "1:976240368439:web:247c2565e0190ef3d658b2"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
+
+        // Check if the user is logged in
         if (localStorage.getItem('userLoggedIn') !== 'true') {
-            window.location.href = 'sign-in.html';  // Redirect to login if not logged in
+            window.location.href = 'sign-in.html'; // Redirect to sign-in page if not logged in
         }
 
         // Handle logout
         document.getElementById("logout").addEventListener("click", () => {
             localStorage.removeItem('userLoggedIn');  // Remove login flag
-            window.location.href = 'login.html';  // Redirect to login
+            window.location.href = 'sign-in.html';  // Redirect to sign-in
         });
     </script>
 </body>
