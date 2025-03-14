@@ -141,6 +141,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        console.error('In served');
 
         // Firebase configuration (replace with your actual config)
         const firebaseConfig = {
@@ -181,6 +182,7 @@
             } catch (error) {
                 document.getElementById("error-message").innerText = error.message;
             }
+            
         });
     </script>
 </body>
