@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSCR - Dashboard</title>
+    <title>Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -76,14 +76,6 @@
             margin-bottom: 5px;
         }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
         button {
             background-color: #00bcd4;
             color: white;
@@ -98,62 +90,39 @@
         button:hover {
             background-color: #0097a7;
         }
-
-        .error {
-            color: red;
-            font-size: 16px;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo">OSCR - Dashboard</div>
+        <div class="logo">OSCR</div>
         <nav>
             <ul>
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Portal</a></li>
                 <li><a href="#">TOS</a></li>
                 <li><a href="#">Status</a></li>
-                <li><a href="#" id="logout">Logout</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
         <section class="content">
-            <h1>Welcome to your Dashboard</h1>
-            <p>Only accessible when logged in.</p>
+            <h1>Dashboard</h1>
+            <p>Welcome to your dashboard! Only accessible when logged in.</p>
+            <button id="signOut">Sign Out</button>
         </section>
     </main>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-
-    <!-- Initialize Firebase -->
-    <script type="module">
-        const firebaseConfig = {
-  apiKey: "AIzaSyBm1GR5Neg_OUhxThNQ4E4Cw7qAqt4oMVU",
-  authDomain: "oscrdatabase-1b5c3eu72j9.firebaseapp.com",
-  projectId: "oscrdatabase-1b5c3eu72j9",
-  storageBucket: "oscrdatabase-1b5c3eu72j9.appspot.com", // fixed this
-  messagingSenderId: "976240368439",
-  appId: "1:976240368439:web:247c2565e0190ef3d658b2"
-        };
-
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore(app);
-
-        // Check if the user is logged in
-        if (localStorage.getItem('userLoggedIn') !== 'true') {
-            window.location.href = 'sign-in.html'; // Redirect to sign-in page if not logged in
+    <script>
+        // Check if user is logged in
+        if (sessionStorage.getItem("loggedIn") !== "true") {
+            window.location.href = "sign-in.html";
         }
 
-        // Handle logout
-        document.getElementById("logout").addEventListener("click", () => {
-            localStorage.removeItem('userLoggedIn');  // Remove login flag
-            window.location.href = 'sign-in.html';  // Redirect to sign-in
+        // Handle sign-out
+        document.getElementById("signOut").addEventListener("click", () => {
+            sessionStorage.removeItem("loggedIn");
+            window.location.href = "sign-in.html";
         });
     </script>
 </body>
