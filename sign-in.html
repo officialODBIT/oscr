@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSCR</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #121212;
+            font-family: 'Crimson Pro', serif;
+            color: #ffffff;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav ul li {
+            list-style: none;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #00bcd4;
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #00bcd4;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0097a7;
+        }
+
+        .error {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">OSCR</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Portal</a></li>
+                <li><a href="#">TOS</a></li>
+                <li><a href="#">Status</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="content">
+            <h1>Sign In</h1>
+            <form id="signInForm">
+                <div class="form-group">
+                    <label for="specId">SpecID:</label>
+                    <input type="text" id="specId" placeholder="Enter your 12-digit SpecID" required>
+                </div>
+                <div class="form-group">
+                    <label for="pin">PIN:</label>
+                    <input type="password" id="pin" placeholder="Enter your PIN" required>
+                </div>
+                <button type="submit">Sign In</button>
+                <div id="error-message" class="error"></div>
+            </form>
+        </section>
+    </main>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+    <!-- Link your firebase.js script here -->
+    <script src="firebase.js"></script>
+
+    <script>
+        // Handle Sign-In
+        document.getElementById("signInForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const specId = document.getElementById("specId").value;
+            const pin = document.getElementById("pin").value;
+
+            try {
+                // Fetch user data from Firestore based on SpecID
+                const userRef = db.collection("users").doc(specId);  // Assuming "users" is the collection name
+                const doc = await userRef.get();
+
+                if (doc.exists) {
+                    const userData = doc.data();
+                    if (userData.pin === pin) {
+                        alert("Sign-in successful!");
+                        // Redirect or further actions here
+                    } else {
+                        throw new Error("Incorrect PIN.");
+                    }
+                } else {
+                    throw new Error("SpecID not found.");
+                }
+            } catch (error) {
+                document.getElementById("error-message").innerText = error.message;
+            }
+        });
+    </script>
+</body>
+</html>
+
