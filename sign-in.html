@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSCR SIGN IN</title>
+    <title>Welcome to oscr.odbit.org! | Sign in</title>
     <style>
         * {
             margin: 0;
@@ -129,7 +129,7 @@
                 </div>
                 <div class="form-group">
                     <label for="pin">PIN:</label>
-                    <input type="password" id="pin" placeholder="Enter your PIN" required autocomplete="current-password">
+                    <input type="password" id="pin" placeholder="Enter your PIN" required>
                 </div>
                 <button type="submit">Sign In</button>
                 <div id="error-message" class="error"></div>
@@ -138,36 +138,40 @@
     </main>
 
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-    <script>
+        // Firebase configuration (replace with your actual config)
         const firebaseConfig = {
-            apiKey: "AIzaSyBm1GR5Neg_OUhxThNQ4E4Cw7qAqt4oMVU",
-            authDomain: "oscrdatabase-1b5c3eu72j9.firebaseapp.com",
-            projectId: "oscrdatabase-1b5c3eu72j9",
-            storageBucket: "oscrdatabase-1b5c3eu72j9.appspot.com",
-            messagingSenderId: "976240368439",
-            appId: "1:976240368439:web:247c2565e0190ef3d658b2"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID",
         };
 
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore(app);
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
+        // Handle Sign-In
         document.getElementById("signInForm").addEventListener("submit", async (e) => {
             e.preventDefault();
             const specId = document.getElementById("specId").value;
             const pin = document.getElementById("pin").value;
 
             try {
-                const userRef = db.collection("users").doc(specId);
-                const doc = await userRef.get();
+                // Fetch user data from Firestore based on SpecID
+                const userRef = doc(db, "users", specId);  // Use doc() for individual document
+                const docSnap = await getDoc(userRef);
 
-                if (doc.exists) {
-                    const userData = doc.data();
+                if (docSnap.exists()) {
+                    const userData = docSnap.data();
                     if (userData.pin === pin) {
-                        sessionStorage.setItem("loggedIn", "true");
-                        window.location.href = "dashboard.html";
+                        alert("Sign-in successful!");
+                        // Redirect or further actions here
                     } else {
                         throw new Error("Incorrect PIN.");
                     }
